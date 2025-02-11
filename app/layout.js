@@ -26,32 +26,26 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      return (
-      <ClerkProvider>
-        <body>
-          <ClerkProvider>
-            <html lang="en">
-              <body>
-                <SignedOut>
-                  <SignInButton />
-                </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-                {children}
-              </body>
-            </html>
-          </ClerkProvider>
-          {/* Footer */}
-          <footer className="bg-blue-50 py-12">
-            <div className="container mx-auto px-4 text-center text-gray-600">
-              <p>Made by Farouk, Husam, Franklyn, Jeremy</p>
-            </div>
-          </footer>
-        </body>
-      </ClerkProvider>
-      )
-    </html>
+    <ClerkProvider>
+      <body>
+        <html lang="en">
+          <body>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            {children}
+          </body>
+        </html>
+        {/* Footer */}
+        <footer className="bg-blue-50 py-12">
+          <div className="container mx-auto px-4 text-center text-gray-600">
+            <p>Made by Farouk, Husam, Franklyn, Jeremy</p>
+          </div>
+        </footer>
+      </body>
+    </ClerkProvider>
   );
 }
