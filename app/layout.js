@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import {
   ClerkProvider,
@@ -27,25 +27,36 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <body>
-        <html lang="en">
-          <body>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            {children}
-          </body>
-        </html>
-        {/* Footer */}
-        <footer className="bg-blue-50 py-12">
-          <div className="container mx-auto px-4 text-center text-gray-600">
+      <html lang="en"> 
+        <body className={`${geistSans.variable} ${geistMono.variable} bg-gray-50`}>
+          <Toaster /> {/* Ensures notifications works */}
+
+          {/* Navigation */}
+          <nav className="p-4 bg-white shadow-md flex justify-between items-center">
+            <h1 className="text-xl font-semibold text-blue-600">EventU</h1>
+            <div>
+              <SignedOut>
+                <SignInButton 
+                  mode="modal"
+                  afterSignInUrl="/home"
+                  className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition"
+                />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+            </div>
+          </nav>
+
+          {/* Page Content */}
+          <main className="min-h-screen">{children}</main>
+
+          {/* Footer */}
+          <footer className="bg-blue-50 py-6 mt-10 text-center text-gray-600">
             <p>Made by Farouk, Husam, Franklyn, Jeremy</p>
-          </div>
-        </footer>
-      </body>
+          </footer>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
