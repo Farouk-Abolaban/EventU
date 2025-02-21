@@ -5,9 +5,9 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
-  UserButton,
 } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import CustomUserDropdown from "@/app/CustomUserDropdown"; //user icon dropdown
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,23 +27,23 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en"> 
+      <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} bg-gray-50`}>
-          <Toaster /> {/* Ensures notifications works */}
+          <Toaster /> {/* Ensures notifications work */}
 
           {/* Navigation */}
           <nav className="p-4 bg-white shadow-md flex justify-between items-center">
-            <h1 className="text-xl font-semibold text-blue-600">EventU</h1>
+            <h1 className="text-xl font-semibold text-red-600">EventU</h1>
             <div>
               <SignedOut>
-                <SignInButton 
+                <SignInButton
                   mode="modal"
                   afterSignInUrl="/home"
-                  className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition"
+                  className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
                 />
               </SignedOut>
               <SignedIn>
-                <UserButton />
+                <CustomUserDropdown />
               </SignedIn>
             </div>
           </nav>
@@ -52,7 +52,7 @@ export default function RootLayout({ children }) {
           <main className="min-h-screen">{children}</main>
 
           {/* Footer */}
-          <footer className="bg-blue-50 py-6 mt-10 text-center text-gray-600">
+          <footer className="bg-red-50 py-6 mt-10 text-center text-gray-600">
             <p>Made by Farouk, Husam, Franklyn, Jeremy</p>
           </footer>
         </body>

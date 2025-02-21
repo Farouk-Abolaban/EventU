@@ -12,30 +12,31 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (isSignedIn) {
-      setLoading(true); // Show loading state animation before redirect
+      setLoading(true); // Shows loading state animation before redirect
       router.push("/home");
     }
   }, [isSignedIn, router]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-50 to-blue-100">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-red-50 to-red-100">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md text-center">
-        <h1 className="text-4xl font-bold text-blue-600 mb-4 animate-fadeIn">Welcome to EventU!</h1>
-        <p className="text-lg text-gray-700 mb-6">Your University Event Management System</p>
+        <h1 className="text-4xl font-bold text-red-600 mb-4 animate-fadeIn">Welcome to EventU!</h1>
+        <p className="text-lg text-gray-700 mb-6">University Event Management System</p>
 
         {/* Shows loading spinner to user when redirecting */}
         {loading ? (
           <div className="flex flex-col items-center">
-            <Loader2 className="animate-spin h-10 w-10 text-blue-600" />
+            <Loader2 className="animate-spin h-10 w-10 text-red-600" />
             <p className="mt-2 text-gray-600">Redirecting...</p>
           </div>
         ) : (
           !isSignedIn && isLoaded && (
-            <SignInButton
-              mode="modal"
-              afterSignInUrl="/home"
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 focus:ring focus:ring-blue-300"
-            >
+<SignInButton
+  mode="modal"
+  afterSignInUrl="/home"
+  className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition duration-300 focus:ring focus:ring-red-300"
+>
+
               Sign In
             </SignInButton>
           )
