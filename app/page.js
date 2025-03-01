@@ -25,15 +25,15 @@ export default function LandingPage() {
       title: "Spring Career Fair",
       date: "Mar 5, 2025",
       time: "4:00 PM",
-      location: "Student Union Building",
+      location: "University Hall (7th Floor)",
       action: "Register"
     },
     {
       id: 2,
-      title: "University Symphony Concert",
+      title: "University Fall Play",
       date: "Mar 12, 2025",
       time: "7:30 PM",
-      location: "Performing Arts Center",
+      location: "Alexander Kasser Theater",
       action: "Get Tickets"
     },
     {
@@ -41,7 +41,7 @@ export default function LandingPage() {
       title: "Alumni Networking Breakfast",
       date: "Mar 15, 2025",
       time: "10:00 AM",
-      location: "Business School Atrium",
+      location: "School of Business",
       action: "RSVP"
     }
   ];
@@ -123,37 +123,13 @@ export default function LandingPage() {
             </div>
           ) : (
             !isSignedIn && isLoaded && (
-              <div>
-                <SignInButton
-                  mode="modal"
-                  afterSignInUrl="/home"
-                  className="w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition duration-300 focus:ring focus:ring-red-300"
-                >
-                  Sign In
-                </SignInButton>
-                
-                <div className="relative my-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div className="relative flex justify-center">
-                    <span className="bg-white px-4 text-sm text-gray-500">OR SIGN IN WITH</span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <button className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition">
-                    Google
-                  </button>
-                  <button className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition">
-                    University SSO
-                  </button>
-                </div>
-                
-                <p className="mt-6 text-gray-600">
-                  Don't have an account? <a href="#" className="text-red-600 hover:underline">Register</a>
-                </p>
-              </div>
+              <SignInButton
+                mode="modal"
+                afterSignInUrl="/home"
+                className="w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition duration-300 focus:ring focus:ring-red-300"
+              >
+                Sign In
+              </SignInButton>
             )
           )}
         </div>
