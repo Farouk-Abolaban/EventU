@@ -74,11 +74,11 @@ export default function RootLayout({ children }) {
 
             <div>
               <SignedOut>
-                <SignInButton
-                  mode="modal"
-                  afterSignInUrl="/"
-                  className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
-                />
+                <SignInButton mode="modal" aftersiginurl="/">
+                  <button className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition">
+                    Sign In
+                  </button>
+                </SignInButton>
               </SignedOut>
               <SignedIn>
                 <CustomUserDropdown />
