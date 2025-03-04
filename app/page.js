@@ -115,22 +115,22 @@ export default function LandingPage() {
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" className="nav-link">
+                      <Link href="/explore-events" className="nav-link">
                         Events
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" className="nav-link">
+                      <Link href="/calendar" className="nav-link">
                         Calendar
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" className="nav-link">
+                      <Link href="/about-us" className="nav-link">
                         About Us
                       </Link>
                     </li>
                     <li>
-                      <Link href="#" className="nav-link">
+                      <Link href="/contact" className="nav-link">
                         Contact
                       </Link>
                     </li>

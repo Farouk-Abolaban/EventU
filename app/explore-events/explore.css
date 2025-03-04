@@ -4,13 +4,19 @@
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background-color: #ffffff; /* Ensure white background regardless of dark mode */
-  color: #171717; /* Ensure dark text regardless of dark mode */
+  background-color: #ffffff !important; /* Force white background */
+  color: #171717 !important; /* Force dark text */
+}
+
+/* Explicitly override dark mode */
+.explore-events-container * {
+  background-color: inherit;
+  color: inherit;
 }
 
 /* Header Styling */
 .header {
-  background-color: #fef2f2; /* Matches the primary-light from page.css */
+  background-color: #fef2f2 !important; /* Matches the primary-light from page.css */
   padding: 40px 20px;
   border-radius: 8px;
   margin-bottom: 30px;
@@ -19,13 +25,13 @@
 
 .header-title {
   font-size: 2.5rem;
-  color: #dc2626; /* Matches the primary color from page.css */
+  color: #dc2626 !important; /* Matches the primary color from page.css */
   margin-bottom: 10px;
 }
 
 .header-description {
   font-size: 1.2rem;
-  color: #4b5563; /* Matches gray-medium from page.css */
+  color: #4b5563 !important; /* Matches gray-medium from page.css */
   max-width: 600px;
   margin: 0 auto;
 }
@@ -33,7 +39,7 @@
 /* Section Styling */
 .section-title {
   font-size: 1.8rem;
-  color: #374151; /* Matches text-dark from page.css */
+  color: #374151 !important; /* Matches text-dark from page.css */
   margin-bottom: 20px;
   text-align: center;
 }
@@ -50,7 +56,7 @@
 }
 
 .category-card {
-  background-color: white;
+  background-color: white !important;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -65,12 +71,12 @@
 
 .category-title {
   font-size: 1.3rem;
-  color: #dc2626; /* Matches the primary color */
+  color: #dc2626 !important; /* Matches the primary color */
   margin-bottom: 10px;
 }
 
 .category-description {
-  color: #6b7280; /* Matches text-light from page.css */
+  color: #6b7280 !important; /* Matches text-light from page.css */
   font-size: 0.95rem;
 }
 
@@ -86,7 +92,7 @@
 }
 
 .event-card {
-  background-color: white;
+  background-color: white !important;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -107,11 +113,11 @@
 .event-image-placeholder {
   width: 100%;
   height: 180px;
-  background-color: #fecaca; /* Matches primary-medium from page.css */
+  background-color: #fecaca !important; /* Matches primary-medium from page.css */
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #dc2626; /* Matches the primary color */
+  color: #dc2626 !important; /* Matches the primary color */
   font-weight: bold;
 }
 
@@ -121,12 +127,12 @@
 
 .event-title {
   font-size: 1.4rem;
-  color: #111827;
+  color: #111827 !important;
   margin-bottom: 10px;
 }
 
 .event-description {
-  color: #6b7280; /* Matches text-light from page.css */
+  color: #6b7280 !important; /* Matches text-light from page.css */
   margin-bottom: 20px;
   font-size: 0.95rem;
   line-height: 1.5;
@@ -134,8 +140,8 @@
 
 .event-button {
   display: inline-block;
-  background-color: #dc2626; /* Matches the primary color */
-  color: white;
+  background-color: #dc2626 !important; /* Matches the primary color */
+  color: white !important;
   padding: 10px 20px;
   border-radius: 6px;
   font-weight: 500;
@@ -144,7 +150,7 @@
 }
 
 .event-button:hover {
-  background-color: #b91c1c; /* Matches primary-hover from page.css */
+  background-color: #b91c1c !important; /* Matches primary-hover from page.css */
 }
 
 /* Footer */
@@ -153,11 +159,11 @@
   padding: 20px;
   text-align: center;
   border-top: 1px solid #e5e7eb;
-  background-color: white;
+  background-color: white !important;
 }
 
 .footer-text {
-  color: #6b7280; /* Matches text-light from page.css */
+  color: #6b7280 !important; /* Matches text-light from page.css */
   font-size: 0.9rem;
 }
 
