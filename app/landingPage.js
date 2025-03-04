@@ -97,7 +97,7 @@ export default function LandingPage() {
           <div className="md:w-1/2 flex justify-center">
             <div className="rounded-lg overflow-hidden shadow-lg">
               <img 
-                src="/campus-events.jpg" 
+                src="/campus-events.png" 
                 alt="University events" 
                 className="w-full h-auto object-cover"
                 onError={(e) => {
