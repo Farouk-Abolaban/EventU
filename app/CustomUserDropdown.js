@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { ChevronDown, User, Calendar, Settings, LogOut } from "lucide-react";
@@ -8,6 +8,13 @@ export default function CustomUserDropdown() {
   const { user } = useUser();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const router = useRouter();
+  // Add a state for client-side rendering
+  const [isClient, setIsClient] = useState(false);
+
+  // Use useEffect to set isClient to true after component mounts
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const menuItems = [
     {
@@ -27,9 +34,20 @@ export default function CustomUserDropdown() {
     },
   ];
 
+  // Only render the full component on the client side
+  if (!isClient) {
+    return (
+      <div className="relative">
+        <button className="flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-gray-100 transition">
+          <div className="w-8 h-8 rounded-full border border-gray-200 bg-gray-100"></div>
+          <ChevronDown size={16} className="text-gray-600" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
-      {/* Improved button styling and alignment */}
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-gray-100 transition"
