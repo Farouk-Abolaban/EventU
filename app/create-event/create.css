@@ -1,188 +1,70 @@
-/* Main Container */
-.explore-events-container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* General Container */
+.create-container {
+    max-width: 500px;
+    margin: 50px auto;
     padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
     font-family: Arial, sans-serif;
-    background-color: #ffffff !important; /* Force white background */
-    color: #171717 !important; /* Force dark text */
   }
   
-  /* Explicitly override dark mode */
-  .explore-events-container * {
-    background-color: inherit;
-    color: inherit;
-  }
-  
-  /* Header Styling */
-  .header {
-    background-color: #fef2f2 !important; /* Matches the primary-light from page.css */
-    padding: 40px 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  .header-title {
-    font-size: 2.5rem;
-    color: #dc2626 !important; /* Matches the primary color from page.css */
-    margin-bottom: 10px;
-  }
-  
-  .header-description {
-    font-size: 1.2rem;
-    color: #4b5563 !important; /* Matches gray-medium from page.css */
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  /* Section Styling */
-  .section-title {
-    font-size: 1.8rem;
-    color: #374151 !important; /* Matches text-dark from page.css */
+  /* Title */
+  h1 {
+    color: #333;
+    font-size: 24px;
     margin-bottom: 20px;
-    text-align: center;
   }
   
-  /* Event Categories */
-  .event-categories {
-    margin-bottom: 40px;
-  }
-  
-  .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .category-card {
-    background-color: white !important;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .category-title {
-    font-size: 1.3rem;
-    color: #dc2626 !important; /* Matches the primary color */
-    margin-bottom: 10px;
-  }
-  
-  .category-description {
-    color: #6b7280 !important; /* Matches text-light from page.css */
-    font-size: 0.95rem;
-  }
-  
-  /* Featured Events */
-  .featured-events {
-    margin-bottom: 40px;
-  }
-  
-  .featured-events-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-  }
-  
-  .event-card {
-    background-color: white !important;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-  }
-  
-  .event-image {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
-  
-  .event-image-placeholder {
-    width: 100%;
-    height: 180px;
-    background-color: #fecaca !important; /* Matches primary-medium from page.css */
+  /* Form Layout */
+  .form {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #dc2626 !important; /* Matches the primary color */
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Labels */
+  label {
     font-weight: bold;
+    text-align: left;
+    display: block;
+    font-size: 14px;
+    color: #555;
   }
   
-  .event-info {
-    padding: 20px;
+  /* Input Fields */
+  input,
+  textarea {
+    width: 100%;
+    color: rgb(23, 7, 7);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
   }
   
-  .event-title {
-    font-size: 1.4rem;
-    color: #111827 !important;
-    margin-bottom: 10px;
+  /* Button */
+   .submit {
+    background: #f32400;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
   }
   
-  .event-description {
-    color: #6b7280 !important; /* Matches text-light from page.css */
-    margin-bottom: 20px;
-    font-size: 0.95rem;
-    line-height: 1.5;
+   .submit:hover {
+    background: #b52a00;
   }
   
-  .event-button {
-    display: inline-block;
-    background-color: #dc2626 !important; /* Matches the primary color */
-    color: white !important;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-  
-  .event-button:hover {
-    background-color: #b91c1c !important; /* Matches primary-hover from page.css */
-  }
-  
-  /* Footer */
-  .footer {
-    margin-top: 50px;
-    padding: 20px;
-    text-align: center;
-    border-top: 1px solid #e5e7eb;
-    background-color: white !important;
-  }
-  
-  .footer-text {
-    color: #6b7280 !important; /* Matches text-light from page.css */
-    font-size: 0.9rem;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .header-title {
-      font-size: 2rem;
-    }
-  
-    .header-description {
-      font-size: 1rem;
-    }
-  
-    .section-title {
-      font-size: 1.5rem;
-    }
-  
-    .featured-events-grid {
-      grid-template-columns: 1fr;
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .container {
+      width: 90%;
+      padding: 15px;
     }
   }
   
