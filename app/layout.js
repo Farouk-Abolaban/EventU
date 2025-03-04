@@ -31,6 +31,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 flex flex-col min-h-screen`}
+          suppressHydrationWarning={true}
         >
           <Toaster /> {/* Ensures notifications work */}
           {/* Navigation */}

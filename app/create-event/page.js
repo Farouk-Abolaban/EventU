@@ -62,7 +62,9 @@ export default function CreateEvent() {
           required
         ></textarea>
 
-        <button className="submit" type="submit">Create Event</button>
+        <button className="submit" type="submit">
+          Create Event
+        </button>
       </form>
     </div>
   );
