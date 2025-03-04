@@ -1,70 +1,69 @@
 /* General Container */
 .create-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    font-family: Arial, sans-serif;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Title */
+h1 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Form Layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Labels */
+label {
+  font-weight: bold;
+  text-align: left;
+  display: block;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Input Fields */
+input,
+textarea {
+  width: 100%;
+  color: rgb(23, 7, 7);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Button */
+ .submit {
+  background: #f32400;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease-in-out;
+}
+
+ .submit:hover {
+  background: #b52a00;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    padding: 15px;
   }
-  
-  /* Title */
-  h1 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  /* Form Layout */
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Labels */
-  label {
-    font-weight: bold;
-    text-align: left;
-    display: block;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  /* Input Fields */
-  input,
-  textarea {
-    width: 100%;
-    color: rgb(23, 7, 7);
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  /* Button */
-   .submit {
-    background: #0070f3;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease-in-out;
-  }
-  
-   .submit:hover {
-    background: #005bb5;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 600px) {
-    .container {
-      width: 90%;
-      padding: 15px;
-    }
-  }
-  
+}
