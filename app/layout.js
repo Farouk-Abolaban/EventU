@@ -8,6 +8,7 @@ import {
 } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import CustomUserDropdown from "@/app/CustomUserDropdown"; //user icon dropdown
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,41 @@ export default function RootLayout({ children }) {
           {/* Navigation */}
           <nav className="p-4 bg-white shadow-md flex justify-between items-center sticky top-0 z-10">
             <h1 className="text-xl font-semibold text-red-600">EventU</h1>
+
+            {/* Navigation Links */}
+            <div className="hidden md:flex space-x-6">
+              <Link
+                href="/"
+                className="text-gray-700 hover:text-red-600 transition"
+              >
+                Home
+              </Link>
+              <Link
+                href="/explore-events"
+                className="text-gray-700 hover:text-red-600 transition"
+              >
+                Events
+              </Link>
+              <Link
+                href="/calendar"
+                className="text-gray-700 hover:text-red-600 transition"
+              >
+                Calendar
+              </Link>
+              <Link
+                href="/about-us"
+                className="text-gray-700 hover:text-red-600 transition"
+              >
+                About Us
+              </Link>
+              <Link
+                href="/contact"
+                className="text-gray-700 hover:text-red-600 transition"
+              >
+                Contact
+              </Link>
+            </div>
+
             <div>
               <SignedOut>
                 <SignInButton
