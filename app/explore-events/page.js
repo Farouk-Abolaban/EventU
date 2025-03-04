@@ -1,4 +1,7 @@
-import './explore.css'; // Importing custom CSS for styling
+"use client";
+
+import Link from "next/link";
+import "./explore.css";
 
 export default function ExploreEvents() {
   return (
@@ -19,19 +22,27 @@ export default function ExploreEvents() {
         <div className="categories-grid">
           <div className="category-card">
             <h3 className="category-title">Workshops</h3>
-            <p className="category-description">Hands-on events to boost your skills and knowledge.</p>
+            <p className="category-description">
+              Hands-on events to boost your skills and knowledge.
+            </p>
           </div>
           <div className="category-card">
             <h3 className="category-title">Conferences</h3>
-            <p className="category-description">Networking and learning with industry experts.</p>
+            <p className="category-description">
+              Networking and learning with industry experts.
+            </p>
           </div>
           <div className="category-card">
             <h3 className="category-title">Social Events</h3>
-            <p className="category-description">Meet new people and expand your social circle.</p>
+            <p className="category-description">
+              Meet new people and expand your social circle.
+            </p>
           </div>
           <div className="category-card">
             <h3 className="category-title">Webinars</h3>
-            <p className="category-description">Join informative online sessions and seminars.</p>
+            <p className="category-description">
+              Join informative online sessions and seminars.
+            </p>
           </div>
         </div>
       </section>
@@ -43,64 +54,44 @@ export default function ExploreEvents() {
           <div className="featured-events-grid">
             {/* Event Card 1 */}
             <div className="event-card">
-              <img
-                src="/campus-events.png"
-                alt="Featured Event"
-                className="event-image"
-              />
+              <div className="event-image-placeholder">Event Image</div>
               <div className="event-info">
                 <h3 className="event-title">Tech Conference 2025</h3>
                 <p className="event-description">
-                  Join top industry professionals and learn about the latest in technology.
+                  Join top industry professionals and learn about the latest in
+                  technology.
                 </p>
-                <button
-                  onClick={() => window.location.href = "/event-details"}
-                  className="event-button"
-                >
+                <Link href="/event-details" className="event-button">
                   View Event
-                </button>
+                </Link>
               </div>
             </div>
 
             {/* Event Card 2 */}
             <div className="event-card">
-              <img
-                src="/event-image-2.jpg"
-                alt="Featured Event"
-                className="event-image"
-              />
+              <div className="event-image-placeholder">Event Image</div>
               <div className="event-info">
                 <h3 className="event-title">Health & Wellness Workshop</h3>
                 <p className="event-description">
                   Learn strategies for maintaining a healthy work-life balance.
                 </p>
-                <button
-                  onClick={() => window.location.href = "/event-details"}
-                  className="event-button"
-                >
+                <Link href="/event-details" className="event-button">
                   View Event
-                </button>
+                </Link>
               </div>
             </div>
 
             {/* Event Card 3 */}
             <div className="event-card">
-              <img
-                src="/event-image-3.jpg"
-                alt="Featured Event"
-                className="event-image"
-              />
+              <div className="event-image-placeholder">Event Image</div>
               <div className="event-info">
                 <h3 className="event-title">Creative Writing Masterclass</h3>
                 <p className="event-description">
                   Unlock your creativity and develop your writing skills.
                 </p>
-                <button
-                  onClick={() => window.location.href = "/event-details"}
-                  className="event-button"
-                >
+                <Link href="/event-details" className="event-button">
                   View Event
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -110,7 +101,8 @@ export default function ExploreEvents() {
       {/* Footer Section */}
       <footer className="footer">
         <p className="footer-text">
-          &copy; 2025 EventU - University Event Management System. All rights reserved.
+          &copy; 2025 EventU - University Event Management System. All rights
+          reserved.
         </p>
       </footer>
     </div>

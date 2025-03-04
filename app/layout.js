@@ -28,9 +28,10 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 flex flex-col min-h-screen`}>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 flex flex-col min-h-screen`}
+        >
           <Toaster /> {/* Ensures notifications work */}
-          
           {/* Navigation */}
           <nav className="p-4 bg-white shadow-md flex justify-between items-center sticky top-0 z-10">
             <h1 className="text-xl font-semibold text-red-600">EventU</h1>
@@ -38,7 +39,7 @@ export default function RootLayout({ children }) {
               <SignedOut>
                 <SignInButton
                   mode="modal"
-                  afterSignInUrl="/home"
+                  afterSignInUrl="/"
                   className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
                 />
               </SignedOut>
@@ -47,10 +48,8 @@ export default function RootLayout({ children }) {
               </SignedIn>
             </div>
           </nav>
-          
           {/* Page Content */}
           <main className="flex-grow py-6 px-4">{children}</main>
-          
           {/* Footer */}
           <footer className="bg-red-50 py-6 text-center text-gray-600 mt-auto">
             <p>Made by Farouk, Husam, Franklyn, Jeremy</p>
