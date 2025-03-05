@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
           <Toaster /> {/* Ensures notifications work */}
           {/* Navigation */}
           <nav className="p-4 bg-white shadow-md flex justify-between items-center sticky top-0 z-10">
-            <h1 className="text-xl font-semibold text-red-600">EventU</h1>
+            <h1 className="text-xl font-semibold text-red-600">MSU</h1>
 
             {/* Navigation Links */}
             <div className="hidden md:flex space-x-6">

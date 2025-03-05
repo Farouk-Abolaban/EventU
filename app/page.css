@@ -18,12 +18,12 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-    background: rgb(255, 161, 161);
+    background: rgb(196, 34, 34);
     border-radius: 10px;
 }
 
 body::-webkit-scrollbar-track {
-    background: rgb(138, 103, 103);
+    background: rgb(163, 151, 151);
 }
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

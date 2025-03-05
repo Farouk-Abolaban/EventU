@@ -24,6 +24,7 @@ export default function LandingPage() {
   const featuredEvents = [
     {
       id: 1,
+      tiles:["/montclair-pic2.jpg"],
       title: "Spring Career Fair",
       date: "Mar 5, 2025",
       time: "4:00 PM",
@@ -32,6 +33,7 @@ export default function LandingPage() {
     },
     {
       id: 2,
+      tiles:["/montclair-pic3.jpg"],
       title: "University Fall Play",
       date: "Mar 12, 2025",
       time: "7:30 PM",
@@ -40,7 +42,8 @@ export default function LandingPage() {
     },
     {
       id: 3,
-      title: "Alumni Networking Breakfast",
+      tiles:["/montclair-pic4.jpg"],
+      title: "MSU Football Fan Club ",
       date: "Mar 15, 2025",
       time: "10:00 AM",
       location: "School of Business",
@@ -108,7 +111,11 @@ export default function LandingPage() {
               className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition"
             >
               <div className="h-48 bg-red-200 flex items-center justify-center text-red-600 font-bold">
-                Event Image
+                <div className="h-48 bg-red-200 flex items-center justify-center text-red-600 font-bold">
+  {event.tiles && event.tiles.length > 0 && (
+    <img src={event.tiles[0]} alt="Event" className="h-full w-auto object-cover" />
+  )}
+</div>
               </div>
               <div className="p-5">
                 <div className="text-red-600 text-sm font-medium mb-1">
