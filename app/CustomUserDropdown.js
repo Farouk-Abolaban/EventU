@@ -2,11 +2,20 @@
 import { useState, useEffect } from "react";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { ChevronDown, User, Calendar, Settings, LogOut } from "lucide-react";
+import {
+  ChevronDown,
+  User,
+  Calendar,
+  Settings,
+  LogOut,
+  Shield,
+  ClipboardCheck,
+} from "lucide-react";
 
 export default function CustomUserDropdown() {
   const { user } = useUser();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userRole, setUserRole] = useState("user"); // Default to regular user
   const router = useRouter();
   // Add a state for client-side rendering
   const [isClient, setIsClient] = useState(false);
@@ -14,9 +23,17 @@ export default function CustomUserDropdown() {
   // Use useEffect to set isClient to true after component mounts
   useEffect(() => {
     setIsClient(true);
+
+    // Get user role from localStorage
+    const userProfile = localStorage.getItem("userProfile");
+    if (userProfile) {
+      const { role } = JSON.parse(userProfile);
+      setUserRole(role);
+    }
   }, []);
 
-  const menuItems = [
+  // Base menu items for all roles
+  const baseMenuItems = [
     {
       label: "Profile",
       icon: <User size={16} />,
@@ -33,6 +50,28 @@ export default function CustomUserDropdown() {
       action: () => router.push("/settings"),
     },
   ];
+
+  // Role-specific menu items
+  const roleMenuItems = {
+    admin: [
+      {
+        label: "Admin Dashboard",
+        icon: <Shield size={16} />,
+        action: () => router.push("/admin-dashboard"),
+      },
+    ],
+    approver: [
+      {
+        label: "Pending Approvals",
+        icon: <ClipboardCheck size={16} />,
+        action: () => router.push("/pending-approvals"),
+      },
+    ],
+    user: [], // Regular users just get the base items
+  };
+
+  // Combine base menu items with role-specific items
+  const menuItems = [...baseMenuItems, ...(roleMenuItems[userRole] || [])];
 
   // Only render the full component on the client side
   if (!isClient) {
@@ -68,6 +107,9 @@ export default function CustomUserDropdown() {
             </p>
             <p className="text-xs text-gray-500 truncate">
               {user?.emailAddresses[0]?.emailAddress}
+            </p>
+            <p className="text-xs font-medium mt-1 text-red-600 capitalize">
+              {userRole}
             </p>
           </div>
           <hr className="my-1" />

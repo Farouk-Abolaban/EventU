@@ -5,6 +5,7 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
+  SignUpButton,
 } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import CustomUserDropdown from "@/app/CustomUserDropdown"; //user icon dropdown
@@ -27,7 +28,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      // Add redirectUrl for both signIn and signUp
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+      afterSignInUrl="/onboarding"
+      afterSignUpUrl="/onboarding"
+    >
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 flex flex-col min-h-screen`}
@@ -74,11 +81,18 @@ export default function RootLayout({ children }) {
 
             <div>
               <SignedOut>
-                <SignInButton mode="modal" aftersiginurl="/">
-                  <button className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition">
-                    Sign In
-                  </button>
-                </SignInButton>
+                <div className="flex space-x-2">
+                  <SignInButton mode="modal">
+                    <button className="px-4 py-2 border border-red-600 text-red-600 font-medium rounded-md hover:bg-red-50 transition">
+                      Sign In
+                    </button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition">
+                      Sign Up
+                    </button>
+                  </SignUpButton>
+                </div>
               </SignedOut>
               <SignedIn>
                 <CustomUserDropdown />
