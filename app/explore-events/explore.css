@@ -153,6 +153,11 @@
   background-color: #b91c1c !important; /* Matches primary-hover from page.css */
 }
 
+/* Search Section */
+.search-section {
+  margin-bottom: 30px;
+}
+
 /* Footer */
 .footer {
   margin-top: 50px;
@@ -184,4 +189,13 @@
   .featured-events-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Search Results Styling */
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
 }
