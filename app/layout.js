@@ -9,6 +9,7 @@ import {
 } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import CustomUserDropdown from "@/app/CustomUserDropdown"; //user icon dropdown
+import RoleSwitcher from "@/components/RoleSwitcher"; // import the RoleSwitcher component
 import Link from "next/link";
 
 const geistSans = Geist({
@@ -95,7 +96,10 @@ export default function RootLayout({ children }) {
                 </div>
               </SignedOut>
               <SignedIn>
-                <CustomUserDropdown />
+                <div className="flex items-center">
+                  <RoleSwitcher /> {/* Add the RoleSwitcher component here */}
+                  <CustomUserDropdown />
+                </div>
               </SignedIn>
             </div>
           </nav>
