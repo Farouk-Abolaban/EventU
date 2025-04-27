@@ -76,7 +76,7 @@ export default function CustomUserDropdown() {
       {
         label: "Admin Dashboard",
         icon: <Shield size={16} />,
-        action: () => router.push("/admin-dashboard"),
+        action: () => router.push("/pending-approvals"), // Changed to direct to pending approvals
       },
     ],
     approver: [

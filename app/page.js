@@ -12,6 +12,8 @@ export default function LandingPage() {
   const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [featuredEvents, setFeaturedEvents] = useState([]);
+  const [loadingEvents, setLoadingEvents] = useState(true);
 
   useEffect(() => {
     if (isSignedIn) {
@@ -20,36 +22,66 @@ export default function LandingPage() {
     }
   }, [isSignedIn, router]);
 
-  // Sample featured events data
-  const featuredEvents = [
-    {
-      id: 1,
-      tiles:["/montclair-pic2.jpg"],
-      title: "Spring Career Fair",
-      date: "Mar 5, 2025",
-      time: "4:00 PM",
-      location: "University Hall (7th Floor)",
-      action: "Register",
-    },
-    {
-      id: 2,
-      tiles:["/montclair-pic3.jpg"],
-      title: "University Fall Play",
-      date: "Mar 12, 2025",
-      time: "7:30 PM",
-      location: "Alexander Kasser Theater",
-      action: "Get Tickets",
-    },
-    {
-      id: 3,
-      tiles:["/montclair-pic4.jpg"],
-      title: "MSU Football Fan Club ",
-      date: "Mar 15, 2025",
-      time: "10:00 AM",
-      location: "School of Business",
-      action: "RSVP",
-    },
-  ];
+  // Fetch real events from the API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoadingEvents(true);
+        const response = await fetch("/api/events?status=approved&limit=3");
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Format events for display
+          const formattedEvents = data.map((event) => ({
+            id: event.id,
+            title: event.title,
+            date: new Date(event.date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            time: event.time,
+            location: event.location,
+            category: event.category,
+            action: "View Details",
+          }));
+
+          setFeaturedEvents(formattedEvents);
+        } else {
+          console.error("Failed to fetch events");
+          // Set fallback events if API fails
+          setFeaturedEvents([
+            {
+              id: 1,
+              title: "Campus Events Coming Soon",
+              date: "Stay Tuned",
+              time: "",
+              location: "MSU Campus",
+              action: "Explore Events",
+            },
+          ]);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        // Set fallback events if API fails
+        setFeaturedEvents([
+          {
+            id: 1,
+            title: "Campus Events Coming Soon",
+            date: "Stay Tuned",
+            time: "",
+            location: "MSU Campus",
+            action: "Explore Events",
+          },
+        ]);
+      } finally {
+        setLoadingEvents(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient">
@@ -104,34 +136,50 @@ export default function LandingPage() {
         <h2 className="text-3xl font-semibold text-center mb-10 text-black">
           Upcoming Featured Events
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredEvents.map((event) => (
-            <div
-              key={event.id}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition"
-            >
-              <div className="h-48 bg-red-200 flex items-center justify-center text-red-600 font-bold">
-                <div className="h-48 bg-red-200 flex items-center justify-center text-red-600 font-bold">
-  {event.tiles && event.tiles.length > 0 && (
-    <img src={event.tiles[0]} alt="Event" className="h-full w-auto object-cover" />
-  )}
-</div>
-              </div>
-              <div className="p-5">
-                <div className="text-red-600 text-sm font-medium mb-1">
-                  {event.date} • {event.time}
+
+        {loadingEvents ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredEvents.map((event) => (
+              <div
+                key={event.id}
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition"
+              >
+                <div className="h-48 bg-red-100 flex items-center justify-center text-red-600 font-bold">
+                  {event.category && (
+                    <div className="text-center">
+                      <span className="inline-block px-3 py-1 bg-red-200 text-red-700 rounded-full mb-2">
+                        {event.category.charAt(0).toUpperCase() +
+                          event.category.slice(1)}
+                      </span>
+                      <br />
+                      <span className="text-red-600">Event Image</span>
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {event.title}
-                </h3>
-                <p className="text-gray-600 mb-4">{event.location}</p>
-                <button className="px-4 py-2 border border-red-600 text-red-600 rounded-md hover:bg-red-50 transition">
-                  {event.action}
-                </button>
+                <div className="p-5">
+                  <div className="text-red-600 text-sm font-medium mb-1">
+                    {event.date}
+                    {event.time ? ` • ${event.time}` : ""}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    {event.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4">{event.location}</p>
+                  <Link
+                    href={`/event-details/${event.id}`}
+                    className="px-4 py-2 border border-red-600 text-red-600 rounded-md hover:bg-red-50 transition"
+                  >
+                    {event.action}
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}
@@ -142,22 +190,26 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold mb-4">EventU</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
+                  <Link
+                    href="/about-us"
+                    className="text-gray-300 hover:text-white"
+                  >
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
+                  <Link
+                    href="/about-us"
+                    className="text-gray-300 hover:text-white"
+                  >
                     Our Team
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
+                  <Link
+                    href="/contact"
+                    className="text-gray-300 hover:text-white"
+                  >
                     Contact
                   </Link>
                 </li>
@@ -167,23 +219,27 @@ export default function LandingPage() {
               <h3 className="text-xl font-semibold mb-4">Resources</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    Help Center
+                  <Link
+                    href="/calendar"
+                    className="text-gray-300 hover:text-white"
+                  >
+                    Event Calendar
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    Event Guidelines
+                  <Link
+                    href="/explore-events"
+                    className="text-gray-300 hover:text-white"
+                  >
+                    Explore Events
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    Event Planning
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    FAQs
+                  <Link
+                    href="/create-event"
+                    className="text-gray-300 hover:text-white"
+                  >
+                    Create Event
                   </Link>
                 </li>
               </ul>
@@ -206,11 +262,6 @@ export default function LandingPage() {
                     Cookie Policy
                   </Link>
                 </li>
-                <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    Accessibility
-                  </Link>
-                </li>
               </ul>
             </div>
             <div>
@@ -229,11 +280,6 @@ export default function LandingPage() {
                 <li>
                   <Link href="#" className="text-gray-300 hover:text-white">
                     Instagram
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-gray-300 hover:text-white">
-                    LinkedIn
                   </Link>
                 </li>
               </ul>
