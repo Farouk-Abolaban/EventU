@@ -1,7 +1,7 @@
 "use client";
 
 import { SignIn } from "@clerk/nextjs";
-import AuthRedirector from "../components/AuthRedirector";
+import AuthRedirector from "@/components/AuthRedirector";
 
 export default function SignInPage() {
   return (

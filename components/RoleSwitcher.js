@@ -1,159 +1,50 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Shield, ChevronDown, User, ClipboardCheck } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Shield } from "lucide-react";
 
 export default function RoleSwitcher() {
-  const [userRole, setUserRole] = useState("user");
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [userRole, setUserRole] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    // Get user role from localStorage
-    const userProfile = localStorage.getItem("userProfile");
-    if (userProfile) {
-      const { role } = JSON.parse(userProfile);
-      setUserRole(role);
-    }
+    setIsClient(true);
 
-    // Close dropdown when clicking outside
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
+    // Fetch user profile to determine role
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch("/api/users/profile");
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUserRole(userData.role);
+          setIsAdmin(userData.role === "admin");
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    fetchUserProfile();
   }, []);
 
-  // Switch to a different role
-  const switchRole = (newRole) => {
-    // Get current user profile
-    const userProfile = localStorage.getItem("userProfile");
-    if (userProfile) {
-      const profile = JSON.parse(userProfile);
-      // Update role
-      profile.role = newRole;
-      // Save back to localStorage
-      localStorage.setItem("userProfile", JSON.stringify(profile));
-      // Update state
-      setUserRole(newRole);
-      // Close dropdown
-      setDropdownOpen(false);
-
-      // Refresh page to apply role changes
-      window.location.reload();
-    }
-  };
-
-  // Get role icon and color
-  const getRoleDetails = (role) => {
-    switch (role) {
-      case "admin":
-        return {
-          icon: <Shield size={16} />,
-          color: "text-red-600",
-          bgColor: "bg-red-100",
-          label: "Administrator",
-        };
-      case "approver":
-        return {
-          icon: <ClipboardCheck size={16} />,
-          color: "text-red-600",
-          bgColor: "bg-red-100",
-          label: "Event Approver",
-        };
-      default:
-        return {
-          icon: <User size={16} />,
-          color: "text-red-600",
-          bgColor: "bg-red-100",
-          label: "User",
-        };
-    }
-  };
-
-  const currentRoleDetails = getRoleDetails(userRole);
+  // Don't show the component if not admin
+  if (!isClient || !isAdmin) {
+    return null;
+  }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative mr-4">
       <button
-        onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center space-x-1 mr-2 px-3 py-1.5 rounded-md border border-red-200 hover:bg-red-50 transition"
+        onClick={() => router.push("/admin-dashboard")}
+        className="flex items-center space-x-1 text-sm px-3 py-1 bg-red-100 text-red-700 rounded-md hover:bg-red-200"
       >
-        <span className={`${currentRoleDetails.color}`}>
-          {currentRoleDetails.icon}
-        </span>
-        <span className="text-sm hidden md:inline text-red-600">
-          {currentRoleDetails.label}
-        </span>
-        <ChevronDown size={14} className="text-gray-500" />
+        <Shield size={14} />
+        <span>Admin</span>
       </button>
-
-      {dropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md p-1 border border-gray-200 z-50">
-          <p className="px-3 py-2 text-xs text-red-500 font-medium">
-            Switch Role
-          </p>
-
-          {/* User Role */}
-          <button
-            onClick={() => switchRole("user")}
-            className={`flex items-center w-full px-3 py-2 text-sm rounded-md ${
-              userRole === "user" ? "bg-gray-100" : "hover:bg-gray-50"
-            }`}
-          >
-            <span className="text-red-600 mr-2">
-              <User size={16} />
-            </span>
-            <span className="text-red-600">User</span>
-            {userRole === "user" && (
-              <span className="ml-auto text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
-                Active
-              </span>
-            )}
-          </button>
-
-          {/* Approver Role */}
-          <button
-            onClick={() => switchRole("approver")}
-            className={`flex items-center w-full px-3 py-2 text-sm rounded-md ${
-              userRole === "approver" ? "bg-gray-100" : "hover:bg-gray-50"
-            }`}
-          >
-            <span className="text-red-600 mr-2">
-              <ClipboardCheck size={16} />
-            </span>
-            <span className="text-red-600">Event Approver</span>
-            {userRole === "approver" && (
-              <span className="ml-auto text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
-                Active
-              </span>
-            )}
-          </button>
-
-          {/* Admin Role */}
-          <button
-            onClick={() => switchRole("admin")}
-            className={`flex items-center w-full px-3 py-2 text-sm rounded-md ${
-              userRole === "admin" ? "bg-gray-100" : "hover:bg-gray-50"
-            }`}
-          >
-            <span className="text-red-600 mr-2">
-              <Shield size={16} />
-            </span>
-            <span className="text-red-600">Administrator</span>
-            {userRole === "admin" && (
-              <span className="ml-auto text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full">
-                Active
-              </span>
-            )}
-          </button>
-        </div>
-      )}
     </div>
   );
 }

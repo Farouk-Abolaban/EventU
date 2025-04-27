@@ -1,0 +1,55 @@
+// Prisma schema for EventU
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// User model - connected to Clerk authentication
+model User {
+  id               String    @id // This will be the Clerk user ID
+  name             String
+  email            String    @unique
+  bio              String?
+  role             String    @default("user") // user, approver, admin
+  userType         String?   // student, faculty, alumni - for UI purposes
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  organizedEvents  Event[]   @relation("EventOrganizer")
+  attendingEvents  Event[]   @relation("EventAttendees")
+}
+
+// Event model
+model Event {
+  id             String    @id @default(cuid())
+  title          String
+  description    String
+  date           DateTime
+  time           String
+  location       String
+  organizer      User      @relation("EventOrganizer", fields: [organizerId], references: [id])
+  organizerId    String
+  category       String
+  status         String    @default("pending") // pending, approved, rejected
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  attendees      User[]    @relation("EventAttendees")
+  approvedBy     String?   // ID of the approver who reviewed this event
+  approvedAt     DateTime?
+  rejectionReason String?
+}
+
+// This model could be used to store notifications
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   // The user who will receive the notification
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

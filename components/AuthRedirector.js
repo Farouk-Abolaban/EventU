@@ -5,26 +5,18 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
 export default function AuthRedirector() {
-  const { isSignedIn, isLoaded, user } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
   const router = useRouter();
 
   useEffect(() => {
-    // Wait for Clerk to load user data
+    // Check if the user object has loaded
     if (!isLoaded) return;
 
+    // If user is signed in, redirect to home
     if (isSignedIn) {
-      // Check if the user already has a role
-      const userProfile = localStorage.getItem("userProfile");
-
-      if (userProfile) {
-        // User has a profile, redirect to home
-        router.push("/");
-      } else {
-        // New user, redirect to onboarding
-        router.push("/onboarding");
-      }
+      router.push("/");
     }
-  }, [isLoaded, isSignedIn, router, user]);
+  }, [isSignedIn, isLoaded, router]);
 
   return null; // This component doesn't render anything
 }

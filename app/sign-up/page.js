@@ -1,7 +1,7 @@
 "use client";
 
 import { SignUp } from "@clerk/nextjs";
-import AuthRedirector from "../components/AuthRedirector";
+import AuthRedirector from "@/components/AuthRedirector";
 
 export default function SignUpPage() {
   return (
@@ -36,4 +36,3 @@ export default function SignUpPage() {
     </div>
   );
 }
-s;

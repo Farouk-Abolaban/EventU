@@ -19,18 +19,37 @@ export default function CustomUserDropdown() {
   const router = useRouter();
   // Add a state for client-side rendering
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Use useEffect to set isClient to true after component mounts
   useEffect(() => {
     setIsClient(true);
 
-    // Get user role from localStorage
-    const userProfile = localStorage.getItem("userProfile");
-    if (userProfile) {
-      const { role } = JSON.parse(userProfile);
-      setUserRole(role);
+    // Fetch user profile from the API
+    const fetchUserProfile = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/users/profile");
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUserRole(userData.role);
+        } else {
+          console.error("Failed to load user profile");
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchUserProfile();
+    } else {
+      setIsLoading(false);
     }
-  }, []);
+  }, [user]);
 
   // Base menu items for all roles
   const baseMenuItems = [

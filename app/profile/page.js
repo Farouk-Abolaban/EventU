@@ -8,14 +8,35 @@ import "./Profile.css";
 export default function Profile() {
   const router = useRouter();
   const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
   const { user } = useUser();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userProfile");
-    if (storedUser) {
-      setUserProfile(JSON.parse(storedUser));
+    // Fetch user profile from the API
+    const fetchUserProfile = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/users/profile");
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserProfile(data);
+        } else {
+          console.error("Failed to load user profile");
+        }
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchUserProfile();
+    } else {
+      setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   // Function to get role badge color
   const getRoleBadgeColor = (role) => {
@@ -40,6 +61,17 @@ export default function Profile() {
         return "Regular User";
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-700">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">

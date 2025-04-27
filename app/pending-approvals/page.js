@@ -3,84 +3,119 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export default function PendingApprovalsPage() {
   const [isApprover, setIsApprover] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [pendingEvents, setPendingEvents] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
     // Check if user has approver role
-    const userProfile = localStorage.getItem("userProfile");
-    if (userProfile) {
-      const { role } = JSON.parse(userProfile);
-      if (role === "approver" || role === "admin") {
-        setIsApprover(true);
-      } else {
-        // If not approver or admin, redirect to home
+    const checkApproverStatus = async () => {
+      try {
+        const response = await fetch("/api/users/profile");
+
+        if (response.ok) {
+          const userData = await response.json();
+          if (userData.role === "approver" || userData.role === "admin") {
+            setIsApprover(true);
+            fetchPendingEvents();
+          } else {
+            // If not approver or admin, redirect to home
+            router.push("/");
+          }
+        } else {
+          // If no profile, redirect to home
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error checking approver status:", error);
         router.push("/");
+      } finally {
+        setIsLoading(false);
       }
-    } else {
-      // If no profile, redirect to home
-      router.push("/");
-    }
-    setIsLoading(false);
+    };
+
+    const fetchPendingEvents = async () => {
+      try {
+        const response = await fetch("/api/events?status=pending");
+
+        if (response.ok) {
+          const events = await response.json();
+          setPendingEvents(events);
+        } else {
+          console.error("Failed to fetch pending events");
+        }
+      } catch (error) {
+        console.error("Error fetching pending events:", error);
+      }
+    };
+
+    checkApproverStatus();
   }, [router]);
 
-  const [pendingEvents, setPendingEvents] = useState([
-    {
-      id: 1,
-      title: "Tech Workshop: Introduction to AI",
-      organizer: "Computer Science Club",
-      date: "Apr 15, 2025",
-      time: "2:00 PM - 4:00 PM",
-      location: "Science Hall, Room 201",
-      description:
-        "Learn the basics of artificial intelligence and machine learning in this hands-on workshop. No prior experience required.",
-      submittedBy: "john.smith@university.edu",
-      submittedOn: "Mar 10, 2025",
-    },
-    {
-      id: 2,
-      title: "Cultural Night: International Cuisine Festival",
-      organizer: "International Students Association",
-      date: "Apr 22, 2025",
-      time: "6:00 PM - 9:00 PM",
-      location: "Student Center Ballroom",
-      description:
-        "Experience cuisines from around the world! Students will prepare and share traditional dishes from their home countries.",
-      submittedBy: "maria.rodriguez@university.edu",
-      submittedOn: "Mar 12, 2025",
-    },
-    {
-      id: 3,
-      title: "Career Panel: Jobs in Finance",
-      organizer: "Business Student Association",
-      date: "Apr 18, 2025",
-      time: "3:00 PM - 5:00 PM",
-      location: "Business Building, Room 305",
-      description:
-        "Join us for a panel discussion with finance professionals from major banks and investment firms. Learn about career paths and opportunities.",
-      submittedBy: "david.chen@university.edu",
-      submittedOn: "Mar 15, 2025",
-    },
-  ]);
+  const handleApprove = async (id) => {
+    try {
+      const response = await fetch(`/api/events/${id}/approve`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  const handleApprove = (id) => {
-    setPendingEvents(pendingEvents.filter((event) => event.id !== id));
-    alert(`Event #${id} has been approved!`);
+      if (response.ok) {
+        setPendingEvents(pendingEvents.filter((event) => event.id !== id));
+        toast.success(`Event has been approved!`);
+      } else {
+        const error = await response.json();
+        toast.error(error.error || "Failed to approve event");
+      }
+    } catch (error) {
+      console.error("Error approving event:", error);
+      toast.error("An error occurred while approving the event");
+    }
   };
 
-  const handleReject = (id) => {
-    setPendingEvents(pendingEvents.filter((event) => event.id !== id));
-    alert(`Event #${id} has been rejected.`);
+  const handleReject = async (id) => {
+    try {
+      const response = await fetch(`/api/events/${id}/reject`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reason: "Event does not meet university guidelines",
+        }),
+      });
+
+      if (response.ok) {
+        setPendingEvents(pendingEvents.filter((event) => event.id !== id));
+        toast.success(`Event has been rejected`);
+      } else {
+        const error = await response.json();
+        toast.error(error.error || "Failed to reject event");
+      }
+    } catch (error) {
+      console.error("Error rejecting event:", error);
+      toast.error("An error occurred while rejecting the event");
+    }
   };
 
-  const handleRequestChanges = (id) => {
+  const handleRequestChanges = async (id) => {
     // In a real application, this would open a dialog to specify changes
     const reason = prompt("Please specify what changes are needed:");
     if (reason) {
-      alert(`Change request for Event #${id} has been sent to organizer.`);
+      try {
+        // This would be an API call in a real application
+        // For now, we'll just simulate it by removing the event from the list
+        setPendingEvents(pendingEvents.filter((event) => event.id !== id));
+        toast.success(`Change request has been sent to organizer`);
+      } catch (error) {
+        console.error("Error requesting changes:", error);
+        toast.error("An error occurred while sending the change request");
+      }
     }
   };
 
@@ -145,10 +180,11 @@ export default function PendingApprovalsPage() {
                 <div>
                   <p className="text-sm text-gray-600 mb-1">
                     <span className="font-medium">Organizer:</span>{" "}
-                    {event.organizer}
+                    {event.organizer?.name || "Unknown"}
                   </p>
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Date:</span> {event.date}
+                    <span className="font-medium">Date:</span>{" "}
+                    {new Date(event.date).toLocaleDateString()}
                   </p>
                   <p className="text-sm text-gray-600 mb-1">
                     <span className="font-medium">Time:</span> {event.time}
@@ -161,11 +197,11 @@ export default function PendingApprovalsPage() {
                 <div>
                   <p className="text-sm text-gray-600 mb-1">
                     <span className="font-medium">Submitted by:</span>{" "}
-                    {event.submittedBy}
+                    {event.organizer?.email || "Unknown"}
                   </p>
                   <p className="text-sm text-gray-600">
                     <span className="font-medium">Submission date:</span>{" "}
-                    {event.submittedOn}
+                    {new Date(event.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>

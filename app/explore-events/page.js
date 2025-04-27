@@ -6,112 +6,67 @@ import "./explore.css";
 import EventSearch from "../../components/EventSearch";
 
 export default function ExploreEvents() {
-  // Sample event data - in a real app, this would come from an API
-  const allEvents = [
-    {
-      id: 1,
-      title: "Tech Conference 2025",
-      description:
-        "Join top industry professionals and learn about the latest in technology.",
-      category: "conferences",
-      date: "2025-06-15",
-      location: "University Hall",
-    },
-    {
-      id: 2,
-      title: "Health & Wellness Workshop",
-      description:
-        "Learn strategies for maintaining a healthy work-life balance.",
-      category: "workshops",
-      date: "2025-05-20",
-      location: "Student Center",
-    },
-    {
-      id: 3,
-      title: "Creative Writing Masterclass",
-      description: "Unlock your creativity and develop your writing skills.",
-      category: "workshops",
-      date: "2025-05-25",
-      location: "Arts Building",
-    },
-    {
-      id: 4,
-      title: "AI in Education Webinar",
-      description:
-        "Discover how artificial intelligence is transforming the education sector.",
-      category: "webinars",
-      date: "2025-06-05",
-      location: "Online",
-    },
-    {
-      id: 5,
-      title: "Spring Campus Mixer",
-      description:
-        "Meet and socialize with other students in a fun, relaxed environment.",
-      category: "social",
-      date: "2025-04-10",
-      location: "Student Center Garden",
-    },
-    {
-      id: 6,
-      title: "Career Development Workshop",
-      description:
-        "Enhance your resume and interview skills with guidance from industry experts.",
-      category: "workshops",
-      date: "2025-04-15",
-      location: "Business Building",
-    },
-  ];
-
-  const [events, setEvents] = useState(allEvents);
+  const [events, setEvents] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch events from API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/events");
+
+        if (response.ok) {
+          const data = await response.json();
+          setEvents(data);
+          setAllEvents(data);
+        } else {
+          console.error("Failed to fetch events");
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   // Handle search submissions
-  const handleSearch = (searchData) => {
+  const handleSearch = async (searchData) => {
     // Destructure search parameters
     const { searchTerm, category, date, location } = searchData;
 
-    // Filter events based on search criteria
-    let filteredEvents = [...allEvents];
+    try {
+      setLoading(true);
 
-    // Search term filter (search in title and description)
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      filteredEvents = filteredEvents.filter(
-        (event) =>
-          event.title.toLowerCase().includes(term) ||
-          event.description.toLowerCase().includes(term)
-      );
+      // Build query string for API
+      const params = new URLSearchParams();
+      if (searchTerm) params.append("search", searchTerm);
+      if (category && category !== "all") params.append("category", category);
+      if (date) params.append("date", date);
+      if (location) params.append("location", location);
+
+      const response = await fetch(`/api/events?${params.toString()}`);
+
+      if (response.ok) {
+        const filteredEvents = await response.json();
+        setEvents(filteredEvents);
+
+        // Update search results state
+        setSearchResults({
+          query: searchData,
+          results: filteredEvents,
+        });
+      }
+    } catch (error) {
+      console.error("Error searching events:", error);
+    } finally {
+      setLoading(false);
     }
-
-    // Category filter
-    if (category && category !== "all") {
-      filteredEvents = filteredEvents.filter(
-        (event) => event.category === category
-      );
-    }
-
-    // Date filter
-    if (date) {
-      filteredEvents = filteredEvents.filter((event) => event.date === date);
-    }
-
-    // Location filter
-    if (location) {
-      const locationTerm = location.toLowerCase();
-      filteredEvents = filteredEvents.filter((event) =>
-        event.location.toLowerCase().includes(locationTerm)
-      );
-    }
-
-    // Update search results
-    setSearchResults({
-      query: searchData,
-      results: filteredEvents,
-    });
-
-    // Update displayed events
-    setEvents(filteredEvents);
   };
 
   // Reset search and show all events
@@ -119,6 +74,22 @@ export default function ExploreEvents() {
     setSearchResults(null);
     setEvents(allEvents);
   };
+
+  if (loading) {
+    return (
+      <div
+        className="explore-events-container"
+        style={{ backgroundColor: "white", color: "black" }}
+      >
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+            <p className="mt-4 text-gray-700">Loading events...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -150,7 +121,7 @@ export default function ExploreEvents() {
               </span>
               {searchResults.query.searchTerm && (
                 <span className="ml-2">
-                  matching "{searchResults.query.searchTerm}"
+                  matching &quot;{searchResults.query.searchTerm}&quot;
                 </span>
               )}
             </div>
@@ -261,7 +232,7 @@ export default function ExploreEvents() {
                       Location: {event.location}
                     </div>
                     <Link
-                      href={`/event-details?id=${event.id}`}
+                      href={`/event-details/${event.id}`}
                       className="event-button"
                       style={{ backgroundColor: "#dc2626", color: "white" }}
                     >
