@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #3b82f6; /* Blue 500 for primary color */
+  --primary-hover: #2563eb; /* Blue 600 for hover */
+  --accent: #f43f5e; /* Rose 500 for accents */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,4 +43,28 @@ body.explore-page {
 
 .explore-events-container * {
   color: inherit;
+}
+
+/* Custom styling for attendee badges */
+.attendee-badge {
+  padding: 0.25rem 0.5rem;
+  background-color: #dbeafe; /* Light blue background */
+  color: #1e40af; /* Dark blue text */
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0;
 }

@@ -363,10 +363,7 @@ export default function EventDetailsPage() {
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {event.attendees.map((attendee) => (
-                      <span
-                        key={attendee.id}
-                        className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs"
-                      >
+                      <span key={attendee.id} className="attendee-badge">
                         {attendee.name}
                       </span>
                     ))}

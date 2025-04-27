@@ -11,6 +11,9 @@ export async function GET(request) {
     const date = searchParams.get("date");
     const location = searchParams.get("location");
     const status = searchParams.get("status") || "approved"; // Default to approved events
+    const limit = searchParams.get("limit")
+      ? parseInt(searchParams.get("limit"))
+      : undefined;
 
     // Build the where clause for filtering
     const where = {
@@ -43,13 +46,14 @@ export async function GET(request) {
       orderBy: {
         date: "asc",
       },
+      ...(limit ? { take: limit } : {}),
     });
 
     return NextResponse.json(events);
   } catch (error) {
     console.error("Error fetching events:", error);
     return NextResponse.json(
-      { error: "Failed to fetch events" },
+      { error: "Failed to fetch events: " + error.message },
       { status: 500 }
     );
   }
@@ -58,7 +62,7 @@ export async function GET(request) {
 // Create a new event
 export async function POST(request) {
   try {
-    console.log("POST /api/events - Start");
+    console.log("POST request to /api/events");
 
     // Get authentication
     const auth = getAuth(request);
@@ -71,12 +75,9 @@ export async function POST(request) {
     }
 
     // Check if user exists in database
-    console.log("Checking if user exists in database");
     const userExists = await prisma.user.findUnique({
       where: { id: userId },
     });
-
-    console.log("User in database:", userExists);
 
     if (!userExists) {
       console.log("User not found in database");
@@ -94,22 +95,11 @@ export async function POST(request) {
 
     // Validate required fields
     if (!title || !description || !date || !time || !location || !category) {
-      console.log("Missing required fields");
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
-
-    console.log("Creating event with data:", {
-      title,
-      description,
-      date,
-      time,
-      location,
-      category,
-      organizerId: userId,
-    });
 
     try {
       // Create the event
@@ -139,8 +129,7 @@ export async function POST(request) {
       );
     }
   } catch (error) {
-    console.error("Error creating event:", error.message);
-    console.error("Error stack:", error.stack);
+    console.error("Error creating event:", error);
     return NextResponse.json(
       { error: "Failed to create event: " + error.message },
       { status: 500 }
