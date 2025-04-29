@@ -13,6 +13,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
+import EventReviews from "@/components/EventReviews";
 
 export default function EventDetailsPage() {
   const params = useParams();
@@ -222,7 +223,7 @@ export default function EventDetailsPage() {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="mt-4 text-gray-700">Loading event details...</p>
         </div>
       </div>
@@ -243,7 +244,7 @@ export default function EventDetailsPage() {
           </p>
           <button
             onClick={() => router.push("/explore-events")}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
           >
             Browse Events
           </button>
@@ -275,13 +276,13 @@ export default function EventDetailsPage() {
         {/* Event Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div>
-            <div className="h-48 bg-blue-100 flex items-center justify-center rounded-lg mb-4">
-              <span className="text-blue-600 font-medium">Event Image</span>
+            <div className="h-48 bg-red-100 flex items-center justify-center rounded-lg mb-4">
+              <span className="text-red-600 font-medium">Event Image</span>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-center text-gray-700">
-                <Calendar size={18} className="mr-2 text-blue-600" />
+                <Calendar size={18} className="mr-2 text-red-600" />
                 <span>
                   {new Date(event.date).toLocaleDateString(undefined, {
                     weekday: "long",
@@ -293,17 +294,17 @@ export default function EventDetailsPage() {
               </div>
 
               <div className="flex items-center text-gray-700">
-                <Clock size={18} className="mr-2 text-blue-600" />
+                <Clock size={18} className="mr-2 text-red-600" />
                 <span>{event.time}</span>
               </div>
 
               <div className="flex items-center text-gray-700">
-                <MapPin size={18} className="mr-2 text-blue-600" />
+                <MapPin size={18} className="mr-2 text-red-600" />
                 <span>{event.location}</span>
               </div>
 
               <div className="flex items-center text-gray-700">
-                <User size={18} className="mr-2 text-blue-600" />
+                <User size={18} className="mr-2 text-red-600" />
                 <span>
                   Organized by {event.organizer?.name || "EventU User"}
                 </span>
@@ -330,7 +331,7 @@ export default function EventDetailsPage() {
                       </p>
                       <button
                         onClick={handleCancelRegistration}
-                        className="px-4 py-2 border border-blue-600 text-blue-600 font-medium rounded-md hover:bg-blue-50 transition"
+                        className="px-4 py-2 border border-red-600 text-red-600 font-medium rounded-md hover:bg-red-50 transition"
                       >
                         Cancel Registration
                       </button>
@@ -338,7 +339,7 @@ export default function EventDetailsPage() {
                   ) : (
                     <button
                       onClick={handleRegister}
-                      className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition"
+                      className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition"
                     >
                       Register for this Event
                     </button>
@@ -381,7 +382,7 @@ export default function EventDetailsPage() {
                     {event.status !== "approved" && (
                       <button
                         onClick={() => router.push(`/edit-event/${event.id}`)}
-                        className="px-4 py-2 border border-blue-600 text-blue-600 font-medium rounded-md hover:bg-blue-50 transition"
+                        className="px-4 py-2 border border-red-600 text-red-600 font-medium rounded-md hover:bg-red-50 transition"
                       >
                         Edit Event
                       </button>
@@ -422,6 +423,13 @@ export default function EventDetailsPage() {
           </div>
         </div>
       </div>
+
+      {/* Reviews Section */}
+      <EventReviews
+        eventId={event.id}
+        eventStatus={event.status}
+        isAttendee={registered}
+      />
     </div>
   );
 }

@@ -141,7 +141,7 @@ export default function MyEventsPage() {
             No events yet
           </h2>
           <p className="text-gray-600 mb-6">
-            You haven't created any events yet. Click the button below to get
+            You haven&apos;t created any events yet. Click the button below to get
             started!
           </p>
           <Link

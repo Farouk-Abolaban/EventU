@@ -10,46 +10,97 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// User model - connected to Clerk authentication
 model User {
-  id               String    @id // This will be the Clerk user ID
-  name             String
-  email            String    @unique
-  bio              String?
-  role             String    @default("user") // user, approver, admin
-  userType         String?   // student, faculty, alumni - for UI purposes
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  organizedEvents  Event[]   @relation("EventOrganizer")
-  attendingEvents  Event[]   @relation("EventAttendees")
+  id        String    @id
+  name      String
+  email     String    @unique
+  bio       String?
+  role      String    @default("user") // "user", "approver", "admin"
+  userType  String?   // "student", "faculty", "staff", etc.
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  organizedEvents Event[]  @relation("EventOrganizer")
+  attendingEvents Event[]  @relation("EventAttendees")
+  reviews     Review[]
+  comments    Comment[]
+  reviewLikes ReviewLike[]
 }
 
-// Event model
 model Event {
-  id             String    @id @default(cuid())
-  title          String
-  description    String
-  date           DateTime
-  time           String
-  location       String
-  organizer      User      @relation("EventOrganizer", fields: [organizerId], references: [id])
-  organizerId    String
-  category       String
-  status         String    @default("pending") // pending, approved, rejected
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  attendees      User[]    @relation("EventAttendees")
-  approvedBy     String?   // ID of the approver who reviewed this event
-  approvedAt     DateTime?
+  id          String    @id @default(cuid())
+  title       String
+  description String    @db.Text
+  date        DateTime
+  time        String
+  location    String
+  category    String
+  status      String    @default("pending") // "pending", "approved", "rejected"
   rejectionReason String?
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  organizer   User      @relation("EventOrganizer", fields: [organizerId], references: [id])
+  organizerId String
+  attendees   User[]    @relation("EventAttendees")
+  reviews     Review[]
+
+  @@index([organizerId])
 }
 
-// This model could be used to store notifications
-model Notification {
-  id        String   @id @default(cuid())
-  userId    String   // The user who will receive the notification
-  title     String
-  message   String
-  read      Boolean  @default(false)
-  createdAt DateTime @default(now())
+model Review {
+  id          String    @id @default(cuid())
+  rating      Int       // Rating from 1-5
+  content     String    @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId     String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  
+  // Comments and likes on this review
+  comments    Comment[]
+  likes       ReviewLike[]
+  
+  @@index([eventId])
+  @@index([userId])
+}
+
+model Comment {
+  id          String    @id @default(cuid())
+  content     String    @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  review      Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId    String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  
+  @@index([reviewId])
+  @@index([userId])
+}
+
+model ReviewLike {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  
+  // Relations
+  review      Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId    String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  
+  // Make sure a user can only like a review once
+  @@unique([reviewId, userId])
+  @@index([reviewId])
+  @@index([userId])
 }
